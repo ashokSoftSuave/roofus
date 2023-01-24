@@ -6,9 +6,6 @@ dotenv.config({ path: "./config.env" });
 const app = require("./index");
 const router = require("./router");
 
-
-const DB = "mongodb+srv://roofus123:nz3B9aqtoUt7Ii0c@roofusdb.wjsknof.mongodb.net/roofus-db?retryWrites=true&w=majority"
-
 mongoose.set('strictQuery', true);
 mongoose.connect(process.env.DB_URI).then(res => {
   console.log('database connection succussfull');

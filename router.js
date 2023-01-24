@@ -2,6 +2,7 @@ const express = require('express');
 const adminUserController =  require('./controller/adminUserController')
 const housesController = require('./controller/housesController')
 const userController = require('./controller/UserController')
+const propertyController = require('./controller/propertyController');
 
 const router = express.Router();
 
@@ -9,6 +10,8 @@ const router = express.Router();
 router.use('/admin', adminUserController)
 router.use('/houses', housesController)
 router.use('/user', userController)
+router.use('/register', adminUserController);
+router.use('/property', propertyController);
 
 router.all("*", (req, res, next) => {
 
