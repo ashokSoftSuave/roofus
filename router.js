@@ -1,10 +1,14 @@
 const express = require('express');
 const adminUserController =  require('./controller/adminUserController')
+const housesController = require('./controller/housesController')
+const userController = require('./controller/UserController')
 
 const router = express.Router();
 
 // router.use('/users', authController);
-router.use('/register', adminUserController)
+router.use('/admin', adminUserController)
+router.use('/houses', housesController)
+router.use('/user', userController)
 
 router.all("*", (req, res, next) => {
 

@@ -6,7 +6,7 @@ const express = require('express');
 const router = express.Router();
 
 
-router.post('/', async (req, res, next) => {
+router.post('/register', async (req, res, next) => {
   try {
 
     let payload = {}
@@ -15,6 +15,12 @@ router.post('/', async (req, res, next) => {
 
       payload.name = req.body.name
       payload.email = req.body.email
+
+    } else{
+
+      res.status(400).json({
+        message: 'please enter both name and email',
+      });
 
     }
 
