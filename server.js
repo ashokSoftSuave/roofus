@@ -6,23 +6,20 @@ dotenv.config({ path: "./config.env" });
 const app = require("./index");
 
 
-const DB = process.env.Database_connection_string.replace(
-  "<password>",
-  process.env.mongoPassword
-);
+// const DB = process.env.Database_connection_string.replace(
+//   "<password>",
+//   process.env.mongoPassword
+// );
 
-mongoose
-  .connect(DB, {
-    useNewUrlParser: true,
-  })
-  .then(() => {
-    console.log("DataBase connected");
-  });
+mongoose.set('strictQuery', true);
+mongoose.connect(process.env.DB_URI).then(res => {
+  console.log('database connection succussfull');
+}).catch(err => {
+  console.log('database connection failed', err);
+})
 
-
-const port = 400;
-const server = app.listen(port, () => {
-  console.log(`listening to port ${port}`);
+const server = app.listen(process.env.PORT, () => {
+  console.log(`listening to port ${process.env.PORT}`);
 });
 
 
