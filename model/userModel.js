@@ -5,6 +5,10 @@ const schema = new mongoose.Schema({
   name: {
     type: String,
     required: [true, "please enter the name!"],
+  },
+  amount: {
+    type: Number,
+    required: [true, "please enter the amount"]
   }
 })
 

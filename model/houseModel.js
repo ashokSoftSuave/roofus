@@ -12,7 +12,8 @@ const schema = new mongoose.Schema({
     default: "Open"
   },
   amount: {
-    type: Number
+    type: Number,
+    required: [true, "please enter the amount"],
   },
   propertyId: {
     type: mongoose.Schema.ObjectId,

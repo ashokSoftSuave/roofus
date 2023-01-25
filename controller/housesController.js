@@ -19,12 +19,29 @@ router.post('/add', async (req, res, next) => {
         message: 'please enter both name and property',
       });
 
+      return
+
+    }
+
+    if(req.body.amount){
+      payload.amount = req.body.amount
+    } else {
+
+      res.status(400).json({
+        statusCode: 400,
+        message: 'please enter the amount'
+      });
+
+      return
+
     }
 
     const response = await service.addHouse(payload)
 
     res.status(201).json({
-      message: 'House added successfully'
+      statusCode: 201,
+      message: 'House added successfully',
+      response
     })
   }
   catch (err) {
