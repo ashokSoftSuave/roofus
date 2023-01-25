@@ -10,7 +10,6 @@ const router = express.Router();
 router.use('/admin', adminUserController)
 router.use('/houses', housesController)
 router.use('/user', userController)
-router.use('/register', adminUserController);
 router.use('/property', propertyController);
 
 router.all("*", (req, res, next) => {

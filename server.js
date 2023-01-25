@@ -1,17 +1,15 @@
-const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 
 dotenv.config({ path: "./config.env" });
 
 const app = require("./index");
+
 const router = require("./router");
 
-mongoose.set('strictQuery', true);
-mongoose.connect(process.env.DB_URI).then(res => {
-  console.log('database connection succussfull');
-}).catch(err => {
-  console.log('database connection failed', err);
-})
+// initalize db connection
+require('./db-connection/db');
+
+
 
 app.use(router);
 
