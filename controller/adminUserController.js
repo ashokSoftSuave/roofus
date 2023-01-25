@@ -16,24 +16,43 @@ router.post('/register', async (req, res, next) => {
       payload.name = req.body.name
       payload.email = req.body.email
 
-    } else{
+    } else {
 
       res.status(400).json({
+        code: 400,
         message: 'please enter both name and email',
       });
 
     }
 
-    const response = service.postAdmin(payload)
-
-    res.status(201).json({
-      message: 'registered successfully'
+    const findRes = await service.findAdmin({
+      email: req.body.email
     })
+
+    if (findRes && findRes.length) {
+
+      res.status(400).json({
+        statusCode: 400,
+        message: 'email already exists',
+        response: findRes
+      })
+
+    } else {
+      const response = await service.postAdmin(payload)
+
+      res.status(201).json({
+        code: 201,
+        message: 'registered successfully',
+        response: response
+      })
+    }
+
 
   }
   catch (err) {
 
     res.status(500).json({
+      statusCode: 500,
       stack: err.stack,
       message: err.message,
     });

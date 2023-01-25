@@ -1,7 +1,10 @@
 const mongoose = require('mongoose');
 
 const property_schema = new mongoose.Schema({
-    name: String,
+    name: {
+      type: String,
+      required: true
+    },
     address: String,
     type: String,
     createdAt: Date,

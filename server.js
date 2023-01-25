@@ -9,9 +9,9 @@ const router = require("./router");
 // initalize db connection
 require('./db-connection/db');
 
-
-
 app.use(router);
+
+
 
 const server = app.listen(process.env.PORT, () => {
   console.log(`listening to port ${process.env.PORT}`);
