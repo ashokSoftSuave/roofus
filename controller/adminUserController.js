@@ -60,6 +60,59 @@ router.post('/register', async (req, res, next) => {
   }
 })
 
+router.post('/login', async(req, res, next)=>{
+  try {
+
+    let payload = {}
+
+    if ( req.body.email) {
+
+      payload.email = req.body.email
+
+    } else {
+
+      res.status(400).json({
+        code: 400,
+        message: 'please enter the email',
+      });
+
+      return
+
+    }
+
+
+    const findRes = await service.findAdmin({
+      email: req.body.email
+    })
+
+    if (findRes && findRes.length) {
+
+      res.status(201).json({
+        statusCode: 201,
+        message: 'login successfull',
+        response: findRes
+      })
+
+    } else {
+      res.status(400).json({
+        statusCode: 400,
+        message: 'login failed',
+      })
+
+      return
+    }
+
+
+  } catch (error) {
+
+    res.status(500).json({
+      statusCode: 500,
+      stack: error.stack,
+      message: error.message,
+    });
+  }
+})
+
 
 module.exports = router
 
