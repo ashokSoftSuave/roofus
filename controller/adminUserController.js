@@ -29,15 +29,15 @@ router.post('/register', async (req, res, next) => {
       email: req.body.email
     })
 
-    // if (findRes && findRes.length) {
+    if (findRes && findRes.length) {
 
-      // res.status(400).json({
-      //   statusCode: 400,
-      //   message: 'email already exists',
-      //   response: findRes
-      // })
+      res.status(400).json({
+        statusCode: 400,
+        message: 'email already exists',
+        response: findRes
+      })
 
-    // } else {
+    } else {
       const response = await service.postAdmin(payload)
 
       res.status(201).json({
@@ -45,19 +45,19 @@ router.post('/register', async (req, res, next) => {
         message: 'registered successfully',
         response: response
       })
-    // }
+    }
 
 
   }
   catch (err) {
 
-    return next(new Error("missing"))
+    // return next(new Error("missing"))
 
-    // res.status(500).json({
-    //   statusCode: 500,
-    //   stack: err.stack,
-    //   message: err.message,
-    // });
+    res.status(500).json({
+      statusCode: 500,
+      stack: err.stack,
+      message: err.message,
+    });
 
   }
 })
