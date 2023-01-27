@@ -132,6 +132,31 @@ router.put('/book/:id', async (req, res, next) => {
   }
 })
 
+router.delete('/delete/:id', async(req, res, next)=>{
+
+  try {
+
+    if (req.params.id){
+
+      const response = await service.removeHouse(req.params.id)
+
+      res.status(201).json({
+        message: 'success',
+        data: response
+      })
+    }
+
+  } catch (error) {
+
+    res.status(500).json({
+      stack: error.stack,
+      message: error.message,
+    });
+
+  }
+
+})
+
 
 module.exports = router
 

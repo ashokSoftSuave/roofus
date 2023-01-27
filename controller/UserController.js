@@ -15,7 +15,7 @@ router.post('/register', async (req, res, next) => {
 
       payload.name = req.body.name
 
-    } else{
+    } else {
 
       res.status(400).json({
         statusCode: 400,
@@ -30,7 +30,7 @@ router.post('/register', async (req, res, next) => {
 
       payload.amount = req.body.amount
 
-    } else{
+    } else {
 
       res.status(400).json({
         statusCode: 400,
@@ -41,13 +41,13 @@ router.post('/register', async (req, res, next) => {
 
     }
 
-      const response = await service.registerUser(payload)
+    const response = await service.registerUser(payload)
 
-      res.status(201).json({
-        statusCode: 200,
-        message: 'registered successfully',
-        response
-      })
+    res.status(201).json({
+      statusCode: 200,
+      message: 'registered successfully',
+      response
+    })
 
   }
   catch (err) {
@@ -62,7 +62,7 @@ router.post('/register', async (req, res, next) => {
 })
 
 
-router.get('/list', async(req, res, next)=>{
+router.get('/list', async (req, res, next) => {
   try {
 
     const response = await service.getUsersList()
@@ -80,6 +80,32 @@ router.get('/list', async(req, res, next)=>{
     });
 
   }
+})
+
+router.delete('/delete/:id', async (req, res, next) => {
+
+  try {
+
+    if (req.params.id) {
+
+      const response = await service.removeUser(req.params.id)
+
+      res.status(201).json({
+        message: 'success',
+        data: response
+      })
+
+    }
+
+  } catch (error) {
+
+    res.status(500).json({
+      stack: error.stack,
+      message: error.message,
+    });
+
+  }
+
 })
 
 

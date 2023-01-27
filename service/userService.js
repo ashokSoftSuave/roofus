@@ -9,3 +9,8 @@ exports.registerUser = async(payload)=>{
 exports.getUsersList = async()=>{
   return await model.find()
 }
+
+
+exports.removeUser = async(id)=>{
+  return await model.findByIdAndDelete(id)
+}

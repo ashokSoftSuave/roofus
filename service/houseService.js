@@ -13,3 +13,7 @@ exports.getHouseList = async () => {
 exports.bookHouse = async (id, payload) => {
   return await model.updateOne({_id: id}, payload)
 }
+
+exports.removeHouse = async(id)=>{
+  return await model.findByIdAndDelete(id)
+}
