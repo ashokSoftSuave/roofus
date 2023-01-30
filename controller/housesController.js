@@ -23,7 +23,7 @@ router.post('/add', async (req, res, next) => {
 
     }
 
-    if(req.body.amount){
+    if (req.body.amount) {
       payload.amount = req.body.amount
     } else {
 
@@ -80,28 +80,7 @@ router.put('/book/:id', async (req, res, next) => {
     const houseId = req.params.id
     let payload = {}
 
-    if (req.body.amount) {
-      payload.amount = req.body.amount
-    } else {
-      res.status(400).json({
-        message: 'Please enter the amount',
-      });
-    }
-
-    if (req.body.startDate && req.body.endDate) {
-      payload.startDate = req.body.startDate
-      payload.endDate = req.body.endDate
-    } else {
-      res.status(400).json({
-        message: 'Please enter the start and end dates',
-      });
-    }
-
-    if(req.body.userId){
-      payload.userId = req.body.userId
-    }
-
-    if(req?.body?.isCheckOut){
+    if (req?.body?.isCheckOut) {
 
       payload = {
         userId: null,
@@ -112,7 +91,54 @@ router.put('/book/:id', async (req, res, next) => {
 
       }
 
+      const response = await service.bookHouse(houseId, payload)
+
+      res.status(201).json({
+        status: 201,
+        message: 'House status is reset successfully',
+        response
+      })
+
+      return
+
     } else {
+
+      if (req.body.amount) {
+        payload.amount = req.body.amount
+      } else {
+        res.status(400).json({
+          status: 400,
+          message: 'Please enter the amount',
+        });
+
+        return
+      }
+
+      if (req.body.startDate && req.body.endDate) {
+        payload.startDate = req.body.startDate
+        payload.endDate = req.body.endDate
+      } else {
+        res.status(400).json({
+          status: 400,
+          message: 'Please enter the start and end dates',
+        });
+
+        return
+      }
+
+      if (req.body.userId) {
+        payload.userId = req.body.userId
+      } else {
+
+        res.status(400).json({
+          status: 400,
+          message: 'Please select the User',
+        });
+
+        return
+
+      }
+
       payload.status = "Booked"
     }
 
@@ -134,11 +160,11 @@ router.put('/book/:id', async (req, res, next) => {
   }
 })
 
-router.delete('/delete/:id', async(req, res, next)=>{
+router.delete('/delete/:id', async (req, res, next) => {
 
   try {
 
-    if (req.params.id){
+    if (req.params.id) {
 
       const response = await service.removeHouse(req.params.id)
 
