@@ -6,7 +6,7 @@ exports.addHouse = async (payload) => {
 }
 
 exports.getHouseList = async () => {
-  return await model.find()
+  return await model.find().populate("propertyId").populate("userId")
 }
 
 

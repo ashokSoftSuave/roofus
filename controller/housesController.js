@@ -59,6 +59,7 @@ router.get('/list', async (req, res, next) => {
     const response = await service.getHouseList()
 
     res.status(201).json({
+      status: 201,
       message: 'success',
       data: response
     })
@@ -118,6 +119,7 @@ router.put('/book/:id', async (req, res, next) => {
     const response = await service.bookHouse(houseId, payload)
 
     res.status(201).json({
+      status: 201,
       message: 'House booked',
       response
     })
