@@ -6,10 +6,18 @@ const schema = new mongoose.Schema({
     type: String,
     required: [true, "please enter the name!"],
   },
-  amount: {
-    type: Number,
-    required: [true, "please enter the amount"]
-  }
+  houses: [{
+    id: {
+      type: mongoose.Schema.ObjectId
+    },
+    startDate: {
+      type: Date,
+    }
+  }]
+  // amount: {
+  //   type: Number,
+  //   required: [true, "please enter the amount"]
+  // }
 })
 
 

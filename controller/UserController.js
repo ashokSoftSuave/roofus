@@ -26,20 +26,20 @@ router.post('/register', async (req, res, next) => {
 
     }
 
-    if (req.body.amount) {
+    // if (req.body.amount) {
 
-      payload.amount = req.body.amount
+    //   payload.amount = req.body.amount
 
-    } else {
+    // } else {
 
-      res.status(400).json({
-        statusCode: 400,
-        message: 'please enter the amount',
-      });
+    //   res.status(400).json({
+    //     statusCode: 400,
+    //     message: 'please enter the amount',
+    //   });
 
-      return
+    //   return
 
-    }
+    // }
 
     const response = await service.registerUser(payload)
 

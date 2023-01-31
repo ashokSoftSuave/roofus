@@ -20,10 +20,10 @@ const schema = new mongoose.Schema({
     ref: "properties",
     required: [true, "please select the property name"],
   },
-  userId: {
+  users:[ {
     type: mongoose.Schema.ObjectId,
     ref: "users",
-  },
+  }],
   startDate: {
     type: Date
   },

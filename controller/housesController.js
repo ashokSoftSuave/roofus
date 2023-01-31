@@ -1,4 +1,5 @@
 const service = require("../service/houseService")
+const userService = require("../service/userService")
 
 const express = require('express');
 
@@ -83,10 +84,9 @@ router.put('/book/:id', async (req, res, next) => {
     if (req?.body?.isCheckOut) {
 
       payload = {
-        userId: null,
+        users: [],
         startDate: null,
         endDate: null,
-        amount: null,
         status: "Open"
 
       }
@@ -103,43 +103,113 @@ router.put('/book/:id', async (req, res, next) => {
 
     } else {
 
-      if (req.body.amount) {
-        payload.amount = req.body.amount
-      } else {
+      // if (req.body.amount) {
+      //   payload.amount = req.body.amount
+      // } else {
+      //   res.status(400).json({
+      //     status: 400,
+      //     message: 'Please enter the amount',
+      //   });
+
+      //   return
+      // }
+
+      // if (req.body.startDate && req.body.endDate) {
+      //   payload.startDate = req.body.startDate
+      //   payload.endDate = req.body.endDate
+      // } else {
+      //   res.status(400).json({
+      //     status: 400,
+      //     message: 'Please enter the start and end dates',
+      //   });
+
+      //   return
+      // }
+
+      const houseDetails = await service.getHouse(houseId)
+
+      if (!houseDetails) {
         res.status(400).json({
           status: 400,
-          message: 'Please enter the amount',
+          message: 'House does not exists',
         });
 
         return
       }
 
-      if (req.body.startDate && req.body.endDate) {
-        payload.startDate = req.body.startDate
-        payload.endDate = req.body.endDate
+      if (req.body.users) {
+
+        let finalUserIds = []
+
+        let existingUsers = []
+
+
+        if (houseDetails && houseDetails.users && houseDetails.users.length) {
+          existingUsers = houseDetails.users
+        }
+        console.log(existingUsers);
+
+        let isUserExists = false
+
+        finalUserIds = req.body.users.map((data, id) => {
+
+          // if (existingUsers && existingUsers.includes(data.id)) {
+
+          //   isUserExists = true
+
+          // }
+
+          return data.id
+
+        })
+
+        if (isUserExists) {
+
+          res.status(400).json({
+            status: 400,
+            message: `some of the Users selected is already enrolled for this house`,
+          });
+
+          return
+
+        }
+
+        payload.users = [...finalUserIds, ...existingUsers]
+
+        if (payload.users && (payload.users.length > houseDetails.amount)) {
+
+          const existingCount = existingUsers.length | 0
+
+          res.status(400).json({
+            status: 400,
+            message: `space available - ${houseDetails.amount - existingCount} , please select the required users for the available space`,
+          });
+
+          return
+        }
+        if(payload.users && (payload.users.length === houseDetails?.amount)){
+
+          payload.status = "Booked"
+
+        }
+
+        if(req.body.startDate){
+
+          userService.updateStartDates(payload.users, req.body, req.params.id)
+
+        }
+
       } else {
+
         res.status(400).json({
           status: 400,
-          message: 'Please enter the start and end dates',
+          message: 'Please select the Users',
         });
 
         return
-      }
-
-      if (req.body.userId) {
-        payload.userId = req.body.userId
-      } else {
-
-        res.status(400).json({
-          status: 400,
-          message: 'Please select the User',
-        });
-
-        return
 
       }
 
-      payload.status = "Booked"
     }
 
     const response = await service.bookHouse(houseId, payload)
