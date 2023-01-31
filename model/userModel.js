@@ -8,7 +8,8 @@ const schema = new mongoose.Schema({
   },
   houses: [{
     id: {
-      type: mongoose.Schema.ObjectId
+      type: mongoose.Schema.ObjectId,
+      ref:"houses"
     },
     startDate: {
       type: Date,

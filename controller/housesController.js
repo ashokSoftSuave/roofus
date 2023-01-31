@@ -2,6 +2,7 @@ const service = require("../service/houseService")
 const userService = require("../service/userService")
 
 const express = require('express');
+const { Mongoose } = require("mongoose");
 
 const router = express.Router();
 
@@ -187,15 +188,15 @@ router.put('/book/:id', async (req, res, next) => {
 
           return
         }
-        if(payload.users && (payload.users.length === houseDetails?.amount)){
+        if (payload.users && (payload.users.length === houseDetails?.amount)) {
 
           payload.status = "Booked"
 
         }
 
-        if(req.body.startDate){
+        if (req.body.startDate) {
 
-          userService.updateStartDates(payload.users, req.body, req.params.id)
+          userService.updateStartDates(finalUserIds, req.body, req.params.id)
 
         }
 
@@ -227,6 +228,94 @@ router.put('/book/:id', async (req, res, next) => {
       message: error.message,
     });
 
+  }
+})
+
+router.put('/unbook/:id', async (req, res, next) => {
+  try {
+
+    let payload = {}
+
+    const houseId = req.params.id
+
+    const houseDetails = await service.getHouse(houseId)
+
+    if (!houseDetails) {
+      res.status(400).json({
+        status: 400,
+        message: 'House does not exists',
+      });
+
+      return
+    }
+
+    if (req.body.users) {
+
+      let reqIds = []
+
+      let existingUsers = []
+
+      reqIds = req.body.users.map((data, id) => {
+
+        // if (existingUsers && existingUsers.includes(data.id)) {
+
+        //   isUserExists = true
+
+        // }
+
+        return data.id
+
+      })
+
+
+      if (houseDetails && houseDetails.users && houseDetails.users.length) {
+        existingUsers = houseDetails.users
+      }
+      console.log(reqIds, 'reqIds');
+
+      // let finalIds = existingUsers.map(data=>{
+      //   console.log(data._id, 'data._id');
+      //   if(!(reqIds.includes(data._id))){
+      //     return data._id
+      //   }
+      // })
+
+      let finalIds = existingUsers.filter(data=>{
+        return !(reqIds.includes(data._id.toString()))
+      })
+
+      payload.users = finalIds
+
+      if (payload.users && (payload.users.length === houseDetails?.amount)) {
+
+        payload.status = "Booked"
+
+      } else {
+
+        payload.status = "Open"
+
+      }
+
+      console.log(payload.users, 'payload.users');
+
+      userService.removeHouseByUserId(houseId,reqIds)
+
+      const response = await service.bookHouse(houseId, payload)
+
+      res.status(201).json({
+        status: 201,
+        message: 'House unbooked',
+        response
+      })
+
+
+    }
+
+  } catch (error) {
+    res.status(500).json({
+      stack: error.stack,
+      message: error.message,
+    });
   }
 })
 
