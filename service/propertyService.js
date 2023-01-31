@@ -19,7 +19,7 @@ async function getPropertyById(id){
 }
 
 async function getproperties(id){
-    return await propertyModel.find();
+    return await propertyModel.find().sort({createdAt: -1});
 }
 
 async function deletePropertyById(id){

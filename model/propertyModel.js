@@ -7,7 +7,10 @@ const property_schema = new mongoose.Schema({
     },
     address: String,
     type: String,
-    createdAt: Date,
+    createdAt: {
+      type: Date,
+      default: Date.now(),
+    },
 });
 
 

@@ -29,7 +29,11 @@ const schema = new mongoose.Schema({
   },
   endDate: {
     type: Date
-  }
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now(),
+  },
 })
 
 
