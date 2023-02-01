@@ -9,6 +9,10 @@ exports.getHouseList = async () => {
   return await model.find().sort({createdAt: -1}).populate("propertyId").populate("users")
 }
 
+exports.getHouseById = async (id) => {
+  return await model.findOne({_id: id}).sort({createdAt: -1}).populate("propertyId").populate("users")
+}
+
 exports.getHouse =  async (id) =>{
   return await model.findById(id)
 }

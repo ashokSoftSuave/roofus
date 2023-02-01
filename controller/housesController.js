@@ -57,22 +57,35 @@ router.post('/add', async (req, res, next) => {
 
 router.get('/list', async (req, res, next) => {
   try {
-
     const response = await service.getHouseList()
-
     res.status(201).json({
       status: 201,
       message: 'success',
       data: response
     })
-
   } catch (error) {
-
     res.status(500).json({
       stack: error.stack,
       message: error.message,
     });
+  }
+})
 
+router.get('/detail/:id', async (req, res, next) => {
+  try {
+    if(req.params.id) {
+      const response = await service.getHouseById(req.params.id)
+      res.status(201).json({
+        status: 201,
+        message: 'success',
+        data: response
+      })
+    }
+  } catch (error) {
+    res.status(500).json({
+      stack: error.stack,
+      message: error.message,
+    });
   }
 })
 

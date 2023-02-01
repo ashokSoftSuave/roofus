@@ -83,29 +83,39 @@ router.get('/list', async (req, res, next) => {
 })
 
 router.delete('/delete/:id', async (req, res, next) => {
-
   try {
-
     if (req.params.id) {
-
       const response = await service.removeUser(req.params.id)
-
       res.status(201).json({
         message: 'success',
         data: response
       })
-
     }
 
   } catch (error) {
-
     res.status(500).json({
       stack: error.stack,
       message: error.message,
     });
-
   }
+})
 
+router.put('/updateUser', async (req, res, next) => {
+  try {
+    if (req.body.id) {
+      const response = await service.editUser(req.body)
+      res.status(201).json({
+        message: 'success',
+        data: response
+      })
+    }
+
+  } catch (error) {
+    res.status(500).json({
+      stack: error.stack,
+      message: error.message,
+    });
+  }
 })
 
 
